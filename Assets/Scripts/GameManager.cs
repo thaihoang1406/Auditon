@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InitPlayer();
-        ArrowController.instance.BuildArrowList(5);
+        ArrowController.instance.BuildArrowList(5, 5);
         ArrowController.instance.StartTrackKey();
         ArrowController.OnSessionEnd += onFinish;
     }
@@ -48,8 +48,9 @@ public class GameManager : MonoBehaviour
             Player1.GetComponent<Animator>().SetTrigger(temp);
             Player2.GetComponent<Animator>().SetTrigger(temp);
             Player3.GetComponent<Animator>().SetTrigger(temp);
-            //ArrowController.instance.BuildArrowList(5);
-            //ArrowController.instance.StartTrackKey();
+
+            ArrowController.instance.BuildArrowList(5, 5);
+            ArrowController.instance.StartTrackKey();
 
         }
     }

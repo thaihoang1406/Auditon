@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ArrowController : MonoBehaviour
@@ -21,8 +22,8 @@ public class ArrowController : MonoBehaviour
 
     public GameObject arrowHolder;
     public GameObject arrowPrefab;
-    public GameObject background;
     public Timer timer;
+    public Text levelTextValue;
     [Range(0.0f, 1.0f)]
     public float maxValueOfPerfect = 0.3f;
     [Range(0.0f, 1.0f)]
@@ -38,7 +39,7 @@ public class ArrowController : MonoBehaviour
     [Range(3, 10)]
     private int numberOfArrow;
 
-    public void BuildArrowList(int numberOfArrow, float sessionTimeout = 30)
+    public void BuildArrowList(int level, int numberOfArrow, float sessionTimeout = 30)
     {
         this.currentTime = 0.0f;
         this.canTrackKey = false;
@@ -52,7 +53,7 @@ public class ArrowController : MonoBehaviour
         }
         arrows.Clear();
 
-        UpdateUI(numberOfArrow);
+        levelTextValue.text = level.ToString();
 
         for (int i=0; i< numberOfArrow; i++)
         {
@@ -65,26 +66,6 @@ public class ArrowController : MonoBehaviour
         }
 
         timer.SetValue(1.0f);
-    }
-
-
-    private void UpdateUI(int numberOfArrow)
-    {
-        Vector2 rootSize = this.GetComponent<RectTransform>().sizeDelta;
-        Vector2 arrowSize = arrowPrefab.GetComponent<RectTransform>().sizeDelta;
-        Vector2 startPieSize = background.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
-        Vector2 midlePieSize = background.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta;
-        Vector2 endPieSize = background.transform.GetChild(2).GetComponent<RectTransform>().sizeDelta;
-        Vector2 newRootSize;
-        
-
-        newRootSize = new Vector2((arrowSize.x + 5) * numberOfArrow, rootSize.y);
-        midlePieSize = new Vector2((newRootSize.x - startPieSize.x - endPieSize.x), midlePieSize.y);
-
-        this.GetComponent<RectTransform>().sizeDelta = newRootSize;
-        background.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = midlePieSize;
-
-        //timer.Init(newRootSize.x);
     }
 
     public void StartTrackKey()
@@ -110,17 +91,16 @@ public class ArrowController : MonoBehaviour
     private void PerformArrowDown(Arrow.ArrowDirection direction)
     {
         Arrow arrow = arrows[arrowIndex];
+        arrowIndex = arrowIndex + 1;
         bool successful = arrow.direction == direction;
         arrow.SetSuccessfulArrow(successful);
         if (!successful)
             DispatchSesstionResult(SessionResult.FAIL);
         else
         {
-            if (arrowIndex == arrows.Count -1)
+            if (arrowIndex == arrows.Count)
             {
                 float percent = (currentTime / sessionTimeout);
-
-                Debug.Log("percent: " + percent);
                 if (percent <= maxValueOfPerfect)
                 {
                     DispatchSesstionResult(SessionResult.PERFECT);
@@ -133,30 +113,6 @@ public class ArrowController : MonoBehaviour
                 {
                     DispatchSesstionResult(SessionResult.GOOD);
                 }
-            }
-        }
-        arrowIndex++;
-
-    }
-
-    private void OnGUI()
-    {
-        if (canTrackKey && Event.current.isKey)
-        {
-            switch(Event.current.keyCode)
-            {
-                case KeyCode.LeftArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.LEFT);
-                    break;
-                case KeyCode.UpArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.UP);
-                    break;
-                case KeyCode.RightArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.RIGHT);
-                    break;
-                case KeyCode.DownArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.DOWN);
-                    break;
             }
         }
     }
