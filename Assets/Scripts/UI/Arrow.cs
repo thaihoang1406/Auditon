@@ -8,9 +8,9 @@ public class Arrow : MonoBehaviour
     {
         NODE = -1,
         LEFT,
-        UP,
-        RIGHT,
         DOWN,
+        RIGHT,
+        UP,
     };
 
     public ArrowDirection direction = ArrowDirection.NODE;
@@ -20,9 +20,17 @@ public class Arrow : MonoBehaviour
     public void SetSuccessfulArrow(bool successful)
     {
         if (successful)
-            animator.SetTrigger("Successful");
+            animator.SetTrigger("success");
         else
-            animator.SetTrigger("Failure");
+            animator.SetTrigger("fail");
+    }
+
+    public void Reset()
+    {
+        this.transform.rotation = Quaternion.identity;
+        this.animator.SetTrigger("reset");
+        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+;        this.gameObject.Kill();
     }
 
     // Start is called before the first frame update

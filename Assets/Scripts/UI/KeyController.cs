@@ -37,7 +37,7 @@ public class KeyController : MonoBehaviour
 
         foreach(Arrow arrow in arrows)
         {
-            arrow.gameObject.Kill();
+            arrow.Reset();
         }
         arrows.Clear();
 
@@ -60,14 +60,14 @@ public class KeyController : MonoBehaviour
         }
     }
 
-    void StartTrackKey()
+    public void StartTrackKey()
     {
         canTrackKey = true;
     }
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this.gameObject);
         KeyController.instance = this;
         arrows = new List<Arrow>();
     }
@@ -78,9 +78,9 @@ public class KeyController : MonoBehaviour
         Debug.Log(result.ToString());
     }
 
-    private void PerformArrowDown(int index, Arrow.ArrowDirection direction)
+    private void PerformArrowDown(Arrow.ArrowDirection direction)
     {
-        Arrow arrow = arrows[index];
+        Arrow arrow = arrows[keyIndex];
         bool successful = arrow.direction == direction;
         arrow.SetSuccessfulArrow(successful);
         if (!successful)
@@ -104,6 +104,7 @@ public class KeyController : MonoBehaviour
                 }
             }
         }
+        keyIndex++;
 
     }
 
@@ -122,19 +123,19 @@ public class KeyController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                PerformArrowDown(keyIndex, Arrow.ArrowDirection.LEFT);
+                PerformArrowDown(Arrow.ArrowDirection.LEFT);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                PerformArrowDown(keyIndex, Arrow.ArrowDirection.UP);
+                PerformArrowDown(Arrow.ArrowDirection.UP);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                PerformArrowDown(keyIndex, Arrow.ArrowDirection.RIGHT);
+                PerformArrowDown(Arrow.ArrowDirection.RIGHT);
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                PerformArrowDown(keyIndex, Arrow.ArrowDirection.DOWN);
+                PerformArrowDown(Arrow.ArrowDirection.DOWN);
             }
 
             if (currentTime > keySessionTimeout)
@@ -144,3 +145,4 @@ public class KeyController : MonoBehaviour
         }
     }
 }
+
