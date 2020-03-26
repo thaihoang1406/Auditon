@@ -131,8 +131,24 @@ public class ArrowController : MonoBehaviour
 
     private void OnGUI()
     {
-        
-        
+        if (canTrackKey && Event.current.isKey)
+        {
+            switch(Event.current.keyCode)
+            {
+                case KeyCode.LeftArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.LEFT);
+                    break;
+                case KeyCode.UpArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.UP);
+                    break;
+                case KeyCode.RightArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.RIGHT);
+                    break;
+                case KeyCode.DownArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.DOWN);
+                    break;
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -151,34 +167,6 @@ public class ArrowController : MonoBehaviour
             {
                 DispatchSesstionResult(SessionResult.MISS);
             }
-        }
-
-        if (canTrackKey/* && Event.current.isKey*/)
-        {
-            if (Input.GetKeyUp("left"))
-                PerformArrowDown(Arrow.ArrowDirection.LEFT);
-            if (Input.GetKeyUp("up"))
-                PerformArrowDown(Arrow.ArrowDirection.UP);
-            if (Input.GetKeyUp("right"))
-                PerformArrowDown(Arrow.ArrowDirection.RIGHT);
-            if (Input.GetKeyUp("down"))
-                PerformArrowDown(Arrow.ArrowDirection.DOWN);
-
-            /*switch (Event.current.keyCode)
-            {
-                case KeyCode.LeftArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.LEFT);
-                    break;
-                case KeyCode.UpArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.UP);
-                    break;
-                case KeyCode.RightArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.RIGHT);
-                    break;
-                case KeyCode.DownArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.DOWN);
-                    break;
-            }*/
         }
     }
 }
