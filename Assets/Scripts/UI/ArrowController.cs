@@ -22,9 +22,13 @@ public class ArrowController : MonoBehaviour
     public GameObject arrowHolder;
     public GameObject arrowPrefab;
     public GameObject background;
-    public int goodPercentTime = 100;
-    public int greatPercentTime = 80;
-    public int perfectPercentTime = 50;
+    public Timer timer;
+    [Range(0.0f, 1.0f)]
+    public float maxValueOfPerfect = 0.3f;
+    [Range(0.0f, 1.0f)]
+    public float maxValueOfGreat = 0.5f;
+    [Range(0.0f, 1.0f)]
+    public float maxValueOfGood = 1.0f;
 
     private List<Arrow> arrows;
     private float sessionTimeout; //Max time can press all arrows
@@ -48,7 +52,7 @@ public class ArrowController : MonoBehaviour
         }
         arrows.Clear();
 
-        UpdateBackground(numberOfArrow);
+        UpdateUI(numberOfArrow);
 
         for (int i=0; i< numberOfArrow; i++)
         {
@@ -59,10 +63,12 @@ public class ArrowController : MonoBehaviour
             arrow.direction = direction;
             arrows.Add(arrow);
         }
+
+        timer.SetValue(1.0f);
     }
 
 
-    private void UpdateBackground(int numberOfArrow)
+    private void UpdateUI(int numberOfArrow)
     {
         Vector2 rootSize = this.GetComponent<RectTransform>().sizeDelta;
         Vector2 arrowSize = arrowPrefab.GetComponent<RectTransform>().sizeDelta;
@@ -77,6 +83,8 @@ public class ArrowController : MonoBehaviour
 
         this.GetComponent<RectTransform>().sizeDelta = newRootSize;
         background.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = midlePieSize;
+
+        //timer.Init(newRootSize.x);
     }
 
     public void StartTrackKey()
@@ -110,46 +118,25 @@ public class ArrowController : MonoBehaviour
         {
             if (arrowIndex == arrows.Count -1)
             {
-                float percent = currentTime / sessionTimeout * 100;
-                if (percent <= perfectPercentTime)
+                float percent = (currentTime / sessionTimeout);
+
+                Debug.Log("percent: " + percent);
+                if (percent <= maxValueOfPerfect)
                 {
                     DispatchSesstionResult(SessionResult.PERFECT);
                 }
-                else if (percent <= greatPercentTime)
+                else if (percent <= maxValueOfGreat)
                 {
                     DispatchSesstionResult(SessionResult.GREAT);
                 }
-                else if (percent <= goodPercentTime)
+                else if (percent <= maxValueOfGood)
                 {
                     DispatchSesstionResult(SessionResult.GOOD);
                 }
             }
         }
         arrowIndex++;
-
     }
-
-    //private void OnGUI()
-    //{
-    //    if (canTrackKey && Event.current.isKey && Event.current.)
-    //    {
-    //        switch(Event.current.keyCode)
-    //        {
-    //            case KeyCode.LeftArrow:
-    //                PerformArrowDown(Arrow.ArrowDirection.LEFT);
-    //                break;
-    //            case KeyCode.UpArrow:
-    //                PerformArrowDown(Arrow.ArrowDirection.UP);
-    //                break;
-    //            case KeyCode.RightArrow:
-    //                PerformArrowDown(Arrow.ArrowDirection.RIGHT);
-    //                break;
-    //            case KeyCode.DownArrow:
-    //                PerformArrowDown(Arrow.ArrowDirection.DOWN);
-    //                break;
-    //        }
-    //    }
-    //}
 
     // Start is called before the first frame update
     void Start()
@@ -180,6 +167,8 @@ public class ArrowController : MonoBehaviour
             }
 
             currentTime = currentTime + Time.deltaTime;
+            float percent = 1.0f - (currentTime / sessionTimeout);
+            timer.SetValue(percent);
             if (currentTime > sessionTimeout)
             {
                 DispatchSesstionResult(SessionResult.MISS);
