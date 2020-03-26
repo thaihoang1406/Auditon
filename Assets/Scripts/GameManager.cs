@@ -11,14 +11,25 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InitPlayer();
-        ArrowController.instance.BuildArrowList(5);
+        ArrowController.instance.BuildArrowList(10);
         ArrowController.instance.StartTrackKey();
+        ArrowController.OnSessionEnd += onFinish;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        ArrowController.OnSessionEnd -= onFinish;
+    }
+
+    public void onFinish(ArrowController.SessionResult sessionResult)
+    {
+        Debug.Log("Hoang: " + sessionResult);
     }
 
     void InitPlayer()
