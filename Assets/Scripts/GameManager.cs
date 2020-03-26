@@ -39,10 +39,11 @@ public class GameManager : MonoBehaviour
             Player1.GetComponent<Animator>().SetTrigger(temp);
             Player2.GetComponent<Animator>().SetTrigger(temp);
             Player3.GetComponent<Animator>().SetTrigger(temp);
-            ArrowController.instance.BuildArrowList(5, 5);
-            ArrowController.instance.StartTrackKey();
+            
 
         }
+        ArrowController.instance.BuildArrowList(5, 5);
+        ArrowController.instance.StartTrackKey();
     }
 
     void InitPlayer()
