@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Image uiValue;
+    //public Image uiValue;
 
     //public void Init(float width, float height = -1)
     //{
@@ -15,10 +15,10 @@ public class Timer : MonoBehaviour
     //    this.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     //}
 
-    public void SetValue(float value)
-    {
-        uiValue.fillAmount = value;
-    }
+    //public void SetValue(float value)
+    //{
+    //    uiValue.fillAmount = value;
+    //}
     // Start is called before the first frame update
     //void Start()
     //{

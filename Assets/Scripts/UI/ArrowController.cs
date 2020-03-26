@@ -22,7 +22,7 @@ public class ArrowController : MonoBehaviour
 
     public GameObject arrowHolder;
     public GameObject arrowPrefab;
-    public Timer timer;
+    public TargetBar targetBar;
     public Text levelTextValue;
     [Range(0.0f, 1.0f)]
     public float maxValueOfPerfect = 0.3f;
@@ -38,14 +38,16 @@ public class ArrowController : MonoBehaviour
     private float currentTime = 0;
     [Range(3, 10)]
     private int numberOfArrow;
+    private bool hasFailure;
 
-    public void BuildArrowList(int level, int numberOfArrow, float sessionTimeout = 30)
+    public void BuildArrowList(int level, int numberOfArrow, float sessionTimeout = 5)
     {
         this.currentTime = 0.0f;
         this.canTrackKey = false;
         this.arrowIndex = 0;
         this.sessionTimeout = sessionTimeout;
         this.numberOfArrow = numberOfArrow;
+        hasFailure = false;
 
         foreach(Arrow arrow in arrows)
         {
@@ -65,7 +67,7 @@ public class ArrowController : MonoBehaviour
             arrows.Add(arrow);
         }
 
-        timer.SetValue(1.0f);
+        //timer.SetValue(1.0f);
     }
 
     public void StartTrackKey()
@@ -90,31 +92,15 @@ public class ArrowController : MonoBehaviour
 
     private void PerformArrowDown(Arrow.ArrowDirection direction)
     {
+        if (arrowIndex >= numberOfArrow)
+            return;
+
         Arrow arrow = arrows[arrowIndex];
         arrowIndex = arrowIndex + 1;
         bool successful = arrow.direction == direction;
         arrow.SetSuccessfulArrow(successful);
         if (!successful)
-            DispatchSesstionResult(SessionResult.FAIL);
-        else
-        {
-            if (arrowIndex == arrows.Count)
-            {
-                float percent = (currentTime / sessionTimeout);
-                if (percent <= maxValueOfPerfect)
-                {
-                    DispatchSesstionResult(SessionResult.PERFECT);
-                }
-                else if (percent <= maxValueOfGreat)
-                {
-                    DispatchSesstionResult(SessionResult.GREAT);
-                }
-                else if (percent <= maxValueOfGood)
-                {
-                    DispatchSesstionResult(SessionResult.GOOD);
-                }
-            }
-        }
+            hasFailure = true;
     }
 
     // Start is called before the first frame update
@@ -146,9 +132,42 @@ public class ArrowController : MonoBehaviour
             }
 
             currentTime = currentTime + Time.deltaTime;
-            float percent = 1.0f - (currentTime / sessionTimeout);
-            timer.SetValue(percent);
             if (currentTime > sessionTimeout)
+            {
+                DispatchSesstionResult(SessionResult.MISS);
+            }
+        }
+
+        float percent = currentTime / sessionTimeout;
+        targetBar.SetValue(percent);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (arrowIndex == arrows.Count && !hasFailure)
+            {
+                if (targetBar.MeetPerfectZone())
+                {
+                    DispatchSesstionResult(SessionResult.PERFECT);
+                }
+                else if (targetBar.MeetGreatZone())
+                {
+                    DispatchSesstionResult(SessionResult.GREAT);
+                }
+                else if (targetBar.MeetGoodZone())
+                {
+                    DispatchSesstionResult(SessionResult.GOOD);
+                    
+                    if (percent >= 0.999f)
+                    {
+                        DispatchSesstionResult(SessionResult.MISS);
+                    }
+                }
+                else
+                {
+                    DispatchSesstionResult(SessionResult.MISS);
+                }
+            }
+            else
             {
                 DispatchSesstionResult(SessionResult.MISS);
             }

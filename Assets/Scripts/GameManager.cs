@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
 
             ArrowController.instance.BuildArrowList(5, 5);
             ArrowController.instance.StartTrackKey();
-
         }
     }
 
