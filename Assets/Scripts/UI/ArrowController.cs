@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class KeyController : MonoBehaviour
+public class ArrowController : MonoBehaviour
 {
     public enum SessionResult
     {
@@ -14,7 +14,7 @@ public class KeyController : MonoBehaviour
         MISS
     };
 
-    public static KeyController instance;
+    public static ArrowController instance;
 
     public GameObject arrowHolder;
     public GameObject arrowPrefab;
@@ -23,17 +23,20 @@ public class KeyController : MonoBehaviour
     public int perfectPercentTime = 50;
 
     private List<Arrow> arrows;
-    private float keySessionTimeout;
-    private int keyIndex = 0;
+    private float sessionTimeout; //Max time can press all arrow
+    private int arrowIndex = 0;
     private bool canTrackKey = false;
     private float currentTime = 0;
+    [Range(3, 10)]
+    private int size;
 
-    public void BuildKeyList(int numberOfKey, float keySessionTimeout)
+    public void BuildArrowList(int numberOfArrow, float sessionTimeout = 30)
     {
         this.currentTime = 0.0f;
         this.canTrackKey = false;
-        this.keyIndex = 0;
-        this.keySessionTimeout = keySessionTimeout;
+        this.arrowIndex = 0;
+        this.sessionTimeout = sessionTimeout;
+        size = numberOfArrow;
 
         foreach(Arrow arrow in arrows)
         {
@@ -42,14 +45,14 @@ public class KeyController : MonoBehaviour
         arrows.Clear();
 
         SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
-        sr.size = new Vector2((arrowPrefab.GetComponent<RectTransform>().sizeDelta.x + 5) * numberOfKey, sr.size.y);
+        sr.size = new Vector2((arrowPrefab.GetComponent<RectTransform>().sizeDelta.x + 5) * size, sr.size.y);
         this.GetComponent<SpriteRenderer>().size = sr.size;
 
         RectTransform rt = this.GetComponent<RectTransform>();
         rt.sizeDelta = new Vector2(sr.size.x, rt.sizeDelta.y);
         this.GetComponent<RectTransform>().sizeDelta = rt.sizeDelta;
 
-        for (int i=0; i<numberOfKey; i++)
+        for (int i=0; i<size; i++)
         {
             Arrow.ArrowDirection direction = (Arrow.ArrowDirection)Random.Range(0, 3);
             Vector3 rotationEule = new Vector3(0, 0, 90 * (int)direction);
@@ -68,7 +71,7 @@ public class KeyController : MonoBehaviour
     private void Awake()
     {
         //DontDestroyOnLoad(this.gameObject);
-        KeyController.instance = this;
+        ArrowController.instance = this;
         arrows = new List<Arrow>();
     }
 
@@ -80,16 +83,16 @@ public class KeyController : MonoBehaviour
 
     private void PerformArrowDown(Arrow.ArrowDirection direction)
     {
-        Arrow arrow = arrows[keyIndex];
+        Arrow arrow = arrows[arrowIndex];
         bool successful = arrow.direction == direction;
         arrow.SetSuccessfulArrow(successful);
         if (!successful)
             DispatchSesstionResult(SessionResult.FAIL);
         else
         {
-            if (keyIndex == arrows.Count -1)
+            if (arrowIndex == arrows.Count -1)
             {
-                float percent = currentTime / keySessionTimeout * 100;
+                float percent = currentTime / sessionTimeout * 100;
                 if (percent <= perfectPercentTime)
                 {
                     DispatchSesstionResult(SessionResult.PERFECT);
@@ -104,7 +107,7 @@ public class KeyController : MonoBehaviour
                 }
             }
         }
-        keyIndex++;
+        arrowIndex++;
 
     }
 
@@ -138,7 +141,7 @@ public class KeyController : MonoBehaviour
                 PerformArrowDown(Arrow.ArrowDirection.DOWN);
             }
 
-            if (currentTime > keySessionTimeout)
+            if (currentTime > sessionTimeout)
             {
                 DispatchSesstionResult(SessionResult.MISS);
             }
