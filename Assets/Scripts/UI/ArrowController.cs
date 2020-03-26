@@ -136,6 +136,29 @@ public class ArrowController : MonoBehaviour
             }
         }
         arrowIndex++;
+
+    }
+
+    private void OnGUI()
+    {
+        if (canTrackKey && Event.current.isKey)
+        {
+            switch(Event.current.keyCode)
+            {
+                case KeyCode.LeftArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.LEFT);
+                    break;
+                case KeyCode.UpArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.UP);
+                    break;
+                case KeyCode.RightArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.RIGHT);
+                    break;
+                case KeyCode.DownArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.DOWN);
+                    break;
+            }
+        }
     }
 
     // Start is called before the first frame update
