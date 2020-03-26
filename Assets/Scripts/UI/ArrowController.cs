@@ -13,11 +13,15 @@ public class ArrowController : MonoBehaviour
         FAIL,
         MISS
     };
+    public delegate void SessionEndAction(SessionResult sessionResult);
+    public static event SessionEndAction OnSessionEnd;
+
 
     public static ArrowController instance;
 
     public GameObject arrowHolder;
     public GameObject arrowPrefab;
+    public GameObject background;
     public int goodPercentTime = 100;
     public int greatPercentTime = 80;
     public int perfectPercentTime = 50;
@@ -44,13 +48,7 @@ public class ArrowController : MonoBehaviour
         }
         arrows.Clear();
 
-        SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
-        sr.size = new Vector2((arrowPrefab.GetComponent<RectTransform>().sizeDelta.x + 5) * size, sr.size.y);
-        this.GetComponent<SpriteRenderer>().size = sr.size;
-
-        RectTransform rt = this.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(sr.size.x, rt.sizeDelta.y);
-        this.GetComponent<RectTransform>().sizeDelta = rt.sizeDelta;
+        UpdateBackground(size);
 
         for (int i=0; i<size; i++)
         {
@@ -61,6 +59,24 @@ public class ArrowController : MonoBehaviour
             arrow.direction = direction;
             arrows.Add(arrow);
         }
+    }
+
+
+    private void UpdateBackground(int numberOfArrow)
+    {
+        Vector2 rootSize = this.GetComponent<RectTransform>().sizeDelta;
+        Vector2 arrowSize = arrowPrefab.GetComponent<RectTransform>().sizeDelta;
+        Vector2 startPieSize = background.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta;
+        Vector2 midlePieSize = background.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta;
+        Vector2 endPieSize = background.transform.GetChild(2).GetComponent<RectTransform>().sizeDelta;
+        Vector2 newRootSize;
+        
+
+        newRootSize = new Vector2((arrowSize.x + 5) * numberOfArrow, rootSize.y);
+        midlePieSize = new Vector2((newRootSize.x - startPieSize.x - endPieSize.x), midlePieSize.y);
+
+        this.GetComponent<RectTransform>().sizeDelta = newRootSize;
+        background.transform.GetChild(1).GetComponent<RectTransform>().sizeDelta = midlePieSize;
     }
 
     public void StartTrackKey()
@@ -78,7 +94,9 @@ public class ArrowController : MonoBehaviour
     private void DispatchSesstionResult(SessionResult result)
     {
         canTrackKey = false;
-        Debug.Log(result.ToString());
+        //Debug.Log(result.ToString());
+        if (OnSessionEnd != null)
+            OnSessionEnd(result);
     }
 
     private void PerformArrowDown(Arrow.ArrowDirection direction)
