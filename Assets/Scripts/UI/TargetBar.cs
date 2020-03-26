@@ -49,6 +49,7 @@ public class TargetBar : MonoBehaviour
     void Start()
     {
         targetBarRectSizeX = this.GetComponent<RectTransform>().sizeDelta.x;
+        Debug.Log("Hoang: " + targetBarRectSizeX);
         rectTarget = target.GetComponent<RectTransform>();
     }
 

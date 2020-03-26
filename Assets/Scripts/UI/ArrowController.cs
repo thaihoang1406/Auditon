@@ -8,11 +8,12 @@ public class ArrowController : MonoBehaviour
 {
     public enum SessionResult
     {
-        PERFECT,
-        GREAT,
-        GOOD,
-        FAIL,
-        MISS
+        PERFECT = 0,
+        GREAT = 1,
+        GOOD = 2,
+        MISS = 3,
+        FAIL = 4
+        
     };
     public delegate void SessionEndAction(SessionResult sessionResult);
     public static event SessionEndAction OnSessionEnd;
