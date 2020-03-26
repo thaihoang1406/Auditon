@@ -27,6 +27,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19816428, guid: ea6edc3a0a047a243a9ec62ca1655977, type: 3}
+      propertyPath: RotationModule.x.minMaxState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19816428, guid: ea6edc3a0a047a243a9ec62ca1655977, type: 3}
+      propertyPath: RotationModule.y.minMaxState
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19981162, guid: ea6edc3a0a047a243a9ec62ca1655977, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
