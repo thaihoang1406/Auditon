@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 698127693}
+  - component: {fileID: 698127694}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -36,6 +37,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 82}
   m_SizeDelta: {x: 0, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &698127694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698127692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617863e81b6c04a3f8aa25ed739f15f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiValue: {fileID: 1257234588}
 --- !u!1 &1257234586
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,9 +266,10 @@ MonoBehaviour:
   arrowPrefab: {fileID: 6087578698313727060, guid: 7b997a6aa676b4124a7c0e8a8caaaab1,
     type: 3}
   background: {fileID: 8668990581509477868}
-  goodPercentTime: 100
-  greatPercentTime: 80
-  perfectPercentTime: 50
+  timer: {fileID: 698127694}
+  maxValueOfPerfect: 0.23
+  maxValueOfGreat: 0.5
+  maxValueOfGood: 1
 --- !u!1 &8668990579958735136
 GameObject:
   m_ObjectHideFlags: 0
