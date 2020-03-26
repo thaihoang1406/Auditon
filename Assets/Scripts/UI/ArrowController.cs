@@ -129,27 +129,27 @@ public class ArrowController : MonoBehaviour
 
     }
 
-    private void OnGUI()
-    {
-        if (canTrackKey && Event.current.isKey)
-        {
-            switch(Event.current.keyCode)
-            {
-                case KeyCode.LeftArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.LEFT);
-                    break;
-                case KeyCode.UpArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.UP);
-                    break;
-                case KeyCode.RightArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.RIGHT);
-                    break;
-                case KeyCode.DownArrow:
-                    PerformArrowDown(Arrow.ArrowDirection.DOWN);
-                    break;
-            }
-        }
-    }
+    //private void OnGUI()
+    //{
+    //    if (canTrackKey && Event.current.isKey && Event.current.)
+    //    {
+    //        switch(Event.current.keyCode)
+    //        {
+    //            case KeyCode.LeftArrow:
+    //                PerformArrowDown(Arrow.ArrowDirection.LEFT);
+    //                break;
+    //            case KeyCode.UpArrow:
+    //                PerformArrowDown(Arrow.ArrowDirection.UP);
+    //                break;
+    //            case KeyCode.RightArrow:
+    //                PerformArrowDown(Arrow.ArrowDirection.RIGHT);
+    //                break;
+    //            case KeyCode.DownArrow:
+    //                PerformArrowDown(Arrow.ArrowDirection.DOWN);
+    //                break;
+    //        }
+    //    }
+    //}
 
     // Start is called before the first frame update
     void Start()
@@ -162,6 +162,23 @@ public class ArrowController : MonoBehaviour
     {
         if (canTrackKey)
         {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                PerformArrowDown(Arrow.ArrowDirection.LEFT);
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                PerformArrowDown(Arrow.ArrowDirection.UP);
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                PerformArrowDown(Arrow.ArrowDirection.RIGHT);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                PerformArrowDown(Arrow.ArrowDirection.DOWN);
+            }
+
             currentTime = currentTime + Time.deltaTime;
             if (currentTime > sessionTimeout)
             {
