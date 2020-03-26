@@ -27,12 +27,12 @@ public class ArrowController : MonoBehaviour
     public int perfectPercentTime = 50;
 
     private List<Arrow> arrows;
-    private float sessionTimeout; //Max time can press all arrow
+    private float sessionTimeout; //Max time can press all arrows
     private int arrowIndex = 0;
     private bool canTrackKey = false;
     private float currentTime = 0;
     [Range(3, 10)]
-    private int size;
+    private int numberOfArrow;
 
     public void BuildArrowList(int numberOfArrow, float sessionTimeout = 30)
     {
@@ -40,7 +40,7 @@ public class ArrowController : MonoBehaviour
         this.canTrackKey = false;
         this.arrowIndex = 0;
         this.sessionTimeout = sessionTimeout;
-        size = numberOfArrow;
+        this.numberOfArrow = numberOfArrow;
 
         foreach(Arrow arrow in arrows)
         {
@@ -48,9 +48,9 @@ public class ArrowController : MonoBehaviour
         }
         arrows.Clear();
 
-        UpdateBackground(size);
+        UpdateBackground(numberOfArrow);
 
-        for (int i=0; i<size; i++)
+        for (int i=0; i< numberOfArrow; i++)
         {
             Arrow.ArrowDirection direction = (Arrow.ArrowDirection)Random.Range(0, 3);
             Vector3 rotationEule = new Vector3(0, 0, 90 * (int)direction);
@@ -129,6 +129,28 @@ public class ArrowController : MonoBehaviour
 
     }
 
+    private void OnGUI()
+    {
+        if (canTrackKey && Event.current.isKey)
+        {
+            switch(Event.current.keyCode)
+            {
+                case KeyCode.LeftArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.LEFT);
+                    break;
+                case KeyCode.UpArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.UP);
+                    break;
+                case KeyCode.RightArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.RIGHT);
+                    break;
+                case KeyCode.DownArrow:
+                    PerformArrowDown(Arrow.ArrowDirection.DOWN);
+                    break;
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -141,24 +163,6 @@ public class ArrowController : MonoBehaviour
         if (canTrackKey)
         {
             currentTime = currentTime + Time.deltaTime;
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                PerformArrowDown(Arrow.ArrowDirection.LEFT);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                PerformArrowDown(Arrow.ArrowDirection.UP);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                PerformArrowDown(Arrow.ArrowDirection.RIGHT);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                PerformArrowDown(Arrow.ArrowDirection.DOWN);
-            }
-
             if (currentTime > sessionTimeout)
             {
                 DispatchSesstionResult(SessionResult.MISS);

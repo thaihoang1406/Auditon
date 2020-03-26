@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InitPlayer();
+        ArrowController.instance.BuildArrowList(5);
+        ArrowController.instance.StartTrackKey();
     }
 
     // Update is called once per frame
