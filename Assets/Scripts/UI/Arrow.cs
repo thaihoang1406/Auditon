@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Arrow : MonoBehaviour
 {
@@ -29,8 +30,8 @@ public class Arrow : MonoBehaviour
     {
         this.transform.rotation = Quaternion.identity;
         this.animator.SetTrigger("reset");
-        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-;        this.gameObject.Kill();
+        this.GetComponent<Image>().color = new Color(1, 1, 1);
+        this.gameObject.Kill();
     }
 
     // Start is called before the first frame update
