@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,9 +9,17 @@ public class GameManager : MonoBehaviour
     public GameObject Player2Prefab;
     public GameObject Player3Prefab;
 
+    public Text Player1Score;
+    public Text Player2Score;
+    public Text Player3Score;
+
     GameObject Player1;
     GameObject Player2;
     GameObject Player3;
+
+    Vector3 posLeft = new Vector3(-3, 0, -3);
+    Vector3 posRight = new Vector3(3, 0, -3);
+    Vector3 posMid = new Vector3(0, 0, -7);
     void Start()
     {
         InitPlayer();
@@ -39,8 +48,8 @@ public class GameManager : MonoBehaviour
             Player1.GetComponent<Animator>().SetTrigger(temp);
             Player2.GetComponent<Animator>().SetTrigger(temp);
             Player3.GetComponent<Animator>().SetTrigger(temp);
-            ArrowController.instance.BuildArrowList(5);
-            ArrowController.instance.StartTrackKey();
+            //ArrowController.instance.BuildArrowList(5);
+            //ArrowController.instance.StartTrackKey();
 
         }
     }
