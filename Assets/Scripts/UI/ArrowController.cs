@@ -43,7 +43,7 @@ public class ArrowController : MonoBehaviour
 
     SoundEffect spaceSFX;//hoang.tuduc - implement sound
 
-    public void BuildArrowList(int level, int numberOfArrow, float sessionTimeout = 5)
+    public void BuildArrowList(int level, int numberOfArrow, float sessionTimeout = 4)
     {
         this.currentTime = 0.0f;
         this.canTrackKey = false;
