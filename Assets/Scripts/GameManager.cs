@@ -82,6 +82,7 @@ public class GameManager : MonoBehaviour
         playerInfos.Add(new PlayerInfo(2));
         playerInfos.Add(new PlayerInfo(3));
         ControllerteamDancing.instance.InitPositionPlayer();
+        
     }
 
     // Update is called once per frame
@@ -160,9 +161,16 @@ public class GameManager : MonoBehaviour
 
     public void RefreshPosPlayer()
     {
-       // Player1.transform.position = posLeft;
-       // Player2.transform.position = posRight;
-       // Player3.transform.position = posMid;
+        Vector3 temp1 = Player1.transform.position;temp1.y = 0;
+        Vector3 temp2 = Player2.transform.position; temp2.y = 0;
+        Vector3 temp3 = Player3.transform.position; temp3.y = 0;
+        Player1.transform.position = temp1;
+        Player2.transform.position = temp2;
+        Player3.transform.position = temp3;
+        //  Player1.transform.position = posLeft;
+        // Player1.transform.position = posLeft;
+        // Player2.transform.position = posRight;
+        // Player3.transform.position = posMid;
         Player1.transform.eulerAngles = new Vector3(Player1.transform.eulerAngles.x, 180, Player1.transform.eulerAngles.z);
         Player2.transform.eulerAngles = new Vector3(Player2.transform.eulerAngles.x, 180, Player2.transform.eulerAngles.z);
         Player3.transform.eulerAngles = new Vector3(Player3.transform.eulerAngles.x, 180, Player3.transform.eulerAngles.z);
@@ -171,6 +179,12 @@ public class GameManager : MonoBehaviour
     float timeFinish = 0;
     bool isShowResultPopup = false;
     bool isFinish = false;
+    public void ShowPosition(GameObject obj)
+    {
+        Debug.Log("x :"+  obj.transform.position.x);
+        Debug.Log("y :" + obj.transform.position.y);
+        Debug.Log("z :" + obj.transform.position.z);
+    }
     public void onFinish(ArrowController.SessionResult sessionResult)
     {
         numRound++;
@@ -190,17 +204,17 @@ public class GameManager : MonoBehaviour
                     case ArrowController.SessionResult.PERFECT:
                         score1 += getScore(0);
                         initEffect(0, Player1.transform.GetChild(3).transform.position);
-                       
+
                         break;
                     case ArrowController.SessionResult.GREAT:
                         score1 += getScore(1);
-                      
+
 
                         initEffect(1, Player1.transform.GetChild(3).transform.position);
                         break;
                     case ArrowController.SessionResult.GOOD:
                         score1 += getScore(2);
-                       
+
 
                         initEffect(2, Player1.transform.GetChild(3).transform.position);
                         break;
@@ -211,7 +225,11 @@ public class GameManager : MonoBehaviour
                 UpdateScore(1, score1);
             }
             else
+            {
                 initEffect(3, Player1.transform.GetChild(3).transform.position);
+                Debug.Log("MIss");
+               
+            }
             string temp = "Ultimate";
             ProcessDanceNPC(temp);
         }
