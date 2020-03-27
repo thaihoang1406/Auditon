@@ -42,6 +42,12 @@ public class GameManager : MonoBehaviour
         ArrowController.OnSessionEnd += onFinish;
     }
 
+    private void PlayEffect(GameObject effectPrefab, Vector3 pos)
+    {
+        SesstionResult sesstionResult = effectPrefab.Spawn(pos).GetComponent<SesstionResult>();
+        sesstionResult.Play();
+    }
+
     private void UpdateScore(int playerId, int score)
     {
         foreach(PlayerInfo playerInfo in playerInfos)
@@ -143,16 +149,20 @@ public class GameManager : MonoBehaviour
         switch (type)
         {
             case 0:
-                Instantiate(PerfectEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(PerfectEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(PerfectEffectPrefab, pos);
                 break;
             case 1:
-                Instantiate(GreatEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(GreatEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(GreatEffectPrefab, pos);
                 break;
             case 2:
-                Instantiate(GoodEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(GoodEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(GoodEffectPrefab, pos);
                 break;
             case 3:
-                Instantiate(MissEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(MissEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(MissEffectPrefab, pos);
                 break;
 
         }
