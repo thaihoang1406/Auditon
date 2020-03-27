@@ -34,10 +34,12 @@ public class GameManager : MonoBehaviour
     {
         numRound = 0;
         //InitPlayer();
+       
         score1 = score2 = score3 = 0;
         ArrowController.instance.BuildArrowList(5, 8);
         ArrowController.instance.StartTrackKey();
         ArrowController.OnSessionEnd += onFinish;
+        ControllerteamDancing.instance.InitPositionPlayer();
     }
 
     // Update is called once per frame
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
         Player1.transform.eulerAngles = new Vector3(Player1.transform.eulerAngles.x, 180, Player1.transform.eulerAngles.z);
         Player2.transform.eulerAngles = new Vector3(Player2.transform.eulerAngles.x, 180, Player2.transform.eulerAngles.z);
         Player3.transform.eulerAngles = new Vector3(Player3.transform.eulerAngles.x, 180, Player3.transform.eulerAngles.z);
+       // ControllerteamDancing.instance.InitPositionPlayer(Player1, Player2, Player3);
     }
     float timeFinish = 0;
     bool isShowResultPopup = false;
@@ -127,7 +130,7 @@ public class GameManager : MonoBehaviour
     {
         numRound++;
         
-        RefreshPosPlayer();
+        //RefreshPosPlayer();
 
         //Ultimate
         if (numRound == 5)
@@ -142,13 +145,18 @@ public class GameManager : MonoBehaviour
                     case ArrowController.SessionResult.PERFECT:
                         score1 += getScore(0);
                         initEffect(0, Player1.transform.GetChild(3).transform.position);
+                       
                         break;
                     case ArrowController.SessionResult.GREAT:
                         score1 += getScore(1);
+                      
+
                         initEffect(1, Player1.transform.GetChild(3).transform.position);
                         break;
                     case ArrowController.SessionResult.GOOD:
                         score1 += getScore(2);
+                       
+
                         initEffect(2, Player1.transform.GetChild(3).transform.position);
                         break;
 
@@ -180,15 +188,18 @@ public class GameManager : MonoBehaviour
             {
                 case ArrowController.SessionResult.PERFECT:
                     score1 += getScore(0);
-                    initEffect(0, Player1.transform.GetChild(3).transform.position);
+                    initEffect(0, Player1.transform.GetChild(3).transform.position);                    //
+                        ControllerteamDancing.instance.SwapDemo();
                     break;
                 case ArrowController.SessionResult.GREAT:
                     score1 += getScore(1);
                     initEffect(1, Player1.transform.GetChild(3).transform.position);
+                    ControllerteamDancing.instance.SwapDemo();
                     break;
                 case ArrowController.SessionResult.GOOD:
                     score1 += getScore(2);
                     initEffect(2, Player1.transform.GetChild(3).transform.position);
+                    ControllerteamDancing.instance.SwapDemo();
                     break;
 
             }
@@ -203,6 +214,6 @@ public class GameManager : MonoBehaviour
 
     void InitPlayer()
     {
-        RefreshPosPlayer();
+       RefreshPosPlayer();
     }
 }

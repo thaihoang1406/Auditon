@@ -2,19 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player
-{
-    
-}
+
 public class ControllerteamDancing : MonoBehaviour
 {
-    public GameObject dancer1;
+    public   GameObject dancer1;
     public GameObject dancer2;
     public GameObject dancer3;   
     Vector3 tempPos1;
     Vector3 tempPos2;
     Vector3 tempPos3;
     public float timemove=1.5f;
+
+    public static ControllerteamDancing instance=null;
+    
+    private void Awake()
+    {
+        instance = this;
+    }
+    public void InitPositionPlayer()
+    {
+      //  dancer1= dancer11;
+      //  dancer2 = dancer22;
+       // dancer3 = dancer33;
+        tempPos1 = dancer1.transform.position;
+        tempPos2 = dancer2.transform.position;
+        tempPos3 = dancer3.transform.position;
+    }
+    public void InitPositionPlayer(GameObject dancer11, GameObject dancer22, GameObject dancer33)
+    {
+          dancer1= dancer11;
+          dancer2 = dancer22;
+         dancer3 = dancer33;
+        tempPos1 = dancer1.transform.position;
+        tempPos2 = dancer2.transform.position;
+        tempPos3 = dancer3.transform.position;
+    }
     IEnumerator SwapDancer1WithDancer2()
     {
         float i = 0;
@@ -48,28 +70,23 @@ public class ControllerteamDancing : MonoBehaviour
     void Start()
     {
         
-        tempPos1 = dancer1.transform.position;
-        tempPos2 = dancer2.transform.position;
-        tempPos3 = dancer3.transform.position;
+        
       
     }
-
+    public  void SwapDemo()
+    {
+        int rd = Random.Range(0, 2);
+        if(rd==0)
+            StartCoroutine(SwapDancer1WithDancer2());
+        else
+            StartCoroutine(SwapDancer1WithDancer3());
+    }
+   
     // Update is called once per frame
     void Update()
     {
         
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log("press sssssssssssssssssssssssssssssssssssssssss");
-            ///  dancer1.transform.localPosition = Vector3.move(dancer1.transform.localPosition, tempPos2, t);
-            //dancer1.transform.position = Vector3.MoveTowards(dancer1.transform.position, new Vector3(0,2,0),1f);
-            StartCoroutine(SwapDancer1WithDancer2());
-        }
         
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            StartCoroutine(SwapDancer1WithDancer3 ());
-        }
         
 
     }
