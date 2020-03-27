@@ -151,9 +151,9 @@ public class GameManager : MonoBehaviour
 
     public void RefreshPosPlayer()
     {
-        Player1.transform.position = posLeft;
-        Player2.transform.position = posRight;
-        Player3.transform.position = posMid;
+       // Player1.transform.position = posLeft;
+       // Player2.transform.position = posRight;
+       // Player3.transform.position = posMid;
         Player1.transform.eulerAngles = new Vector3(Player1.transform.eulerAngles.x, 180, Player1.transform.eulerAngles.z);
         Player2.transform.eulerAngles = new Vector3(Player2.transform.eulerAngles.x, 180, Player2.transform.eulerAngles.z);
         Player3.transform.eulerAngles = new Vector3(Player3.transform.eulerAngles.x, 180, Player3.transform.eulerAngles.z);
@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
     {
         numRound++;
         
-        //RefreshPosPlayer();
+        RefreshPosPlayer();
 
         //Ultimate
         if (numRound == 5)
