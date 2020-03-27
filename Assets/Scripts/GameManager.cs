@@ -37,9 +37,15 @@ public class GameManager : MonoBehaviour
     private void OnIntroPlayEnded()
     {
         arrowBox.SetActive(true);
-        ArrowController.instance.BuildArrowList(5, 8);
+        ArrowController.instance.BuildArrowList(1, 5);
         ArrowController.instance.StartTrackKey();
         ArrowController.OnSessionEnd += onFinish;
+    }
+
+    private void PlayEffect(GameObject effectPrefab, Vector3 pos)
+    {
+        SesstionResult sesstionResult = effectPrefab.Spawn(pos).GetComponent<SesstionResult>();
+        sesstionResult.Play();
     }
 
     private void UpdateScore(int playerId, int score)
@@ -92,6 +98,7 @@ public class GameManager : MonoBehaviour
         {
             isShowResultPopup = true;
             ResultPopup.active = true;
+            ResultPopup.transform.GetChild(2).GetComponent<Text>().text = score1.ToString();
         }
     }
 
@@ -144,16 +151,20 @@ public class GameManager : MonoBehaviour
         switch (type)
         {
             case 0:
-                Instantiate(PerfectEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(PerfectEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(PerfectEffectPrefab, pos);
                 break;
             case 1:
-                Instantiate(GreatEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(GreatEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(GreatEffectPrefab, pos);
                 break;
             case 2:
-                Instantiate(GoodEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(GoodEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(GoodEffectPrefab, pos);
                 break;
             case 3:
-                Instantiate(MissEffectPrefab, pos, Quaternion.identity);
+                //Instantiate(MissEffectPrefab, pos, Quaternion.identity);
+                PlayEffect(MissEffectPrefab, pos);
                 break;
 
         }
@@ -192,7 +203,7 @@ public class GameManager : MonoBehaviour
         RefreshPosPlayer();
 
         //Ultimate
-        if (numRound == 5)
+        if (numRound == 20)
         {
             isFinish = true;
             timeFinish = Time.time;
@@ -270,7 +281,9 @@ public class GameManager : MonoBehaviour
 
             //Player1Score.text = "Player 1: " + score1;
             UpdateScore(1, score1);
-            ArrowController.instance.BuildArrowList(5, 8);
+            int lvl = numRound / 4 + 1;
+            int numArrow = 5 + numRound / 4;
+            ArrowController.instance.BuildArrowList(lvl, numArrow);
             ArrowController.instance.StartTrackKey();
         }
         
