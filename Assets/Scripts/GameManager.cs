@@ -30,7 +30,17 @@ public class GameManager : MonoBehaviour
     public GameObject Player2;
     public GameObject Player3;
 
+    public GameObject arrowBox;
+
     private List<PlayerInfo> playerInfos;
+
+    private void OnIntroPlayEnded()
+    {
+        arrowBox.SetActive(true);
+        ArrowController.instance.BuildArrowList(5, 8);
+        ArrowController.instance.StartTrackKey();
+        ArrowController.OnSessionEnd += onFinish;
+    }
 
     private void UpdateScore(int playerId, int score)
     {
@@ -65,9 +75,7 @@ public class GameManager : MonoBehaviour
         //InitPlayer();
        
         score1 = score2 = score3 = 0;
-        ArrowController.instance.BuildArrowList(5, 8);
-        ArrowController.instance.StartTrackKey();
-        ArrowController.OnSessionEnd += onFinish;
+        IntroController.instance.OnPlayEnded += OnIntroPlayEnded;
 
         playerInfos = new List<PlayerInfo>();
         playerInfos.Add(new PlayerInfo(1));
@@ -89,6 +97,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         ArrowController.OnSessionEnd -= onFinish;
+        IntroController.instance.OnPlayEnded -= OnIntroPlayEnded;
     }
 
     void ProcessDanceNPC(string triggerDance)
