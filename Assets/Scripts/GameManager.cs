@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
             isShowResultPopup = true;
             ResultPopup.active = true;
             ResultPopup.transform.GetChild(2).GetComponent<Text>().text = score1.ToString();
+            RefreshPosPlayer();
         }
     }
 
