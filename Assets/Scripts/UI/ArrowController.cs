@@ -41,6 +41,8 @@ public class ArrowController : MonoBehaviour
     private int numberOfArrow;
     private bool hasFailure;
 
+    SoundEffect spaceSFX;//hoang.tuduc - implement sound
+
     public void BuildArrowList(int level, int numberOfArrow, float sessionTimeout = 5)
     {
         this.currentTime = 0.0f;
@@ -107,7 +109,7 @@ public class ArrowController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        spaceSFX = GameObject.Find("SpaceSFX").GetComponent<SoundEffect>();//hoang.tuduc - implement sound
     }
 
     // Update is called once per frame
@@ -144,6 +146,7 @@ public class ArrowController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            spaceSFX.Play();//hoang.tuduc - implement sound
             if (arrowIndex == arrows.Count && !hasFailure)
             {
                 if (targetBar.MeetPerfectZone())
