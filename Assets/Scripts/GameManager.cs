@@ -5,6 +5,15 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    class PlayerInfo
+    {
+        public int id;
+        public int Score;
+        public PlayerInfo(int id)
+        {
+            this.id = id;
+        }
+    };
 
     public Text Player1Score;
     public Text Player2Score;
@@ -20,6 +29,26 @@ public class GameManager : MonoBehaviour
     public GameObject Player1;
     public GameObject Player2;
     public GameObject Player3;
+
+    private List<PlayerInfo> playerInfos;
+
+    private void UpdateScore(int playerId, int score)
+    {
+        foreach(PlayerInfo playerInfo in playerInfos)
+        {
+            if (playerInfo.id == playerId)
+            {
+                playerInfo.Score = score;
+            }
+        }
+
+        playerInfos.Sort((a, b) => { return a.Score < b.Score ? 1 : -1; });
+
+        //print
+        Player1Score.text = "Player " + playerInfos[0].id + ": " + playerInfos[0].Score;
+        Player2Score.text = "Player " + playerInfos[1].id + ": " + playerInfos[1].Score;
+        Player3Score.text = "Player " + playerInfos[2].id + ": " + playerInfos[2].Score;
+    }
 
     int score1;
     int score2;
@@ -39,6 +68,11 @@ public class GameManager : MonoBehaviour
         ArrowController.instance.BuildArrowList(5, 8);
         ArrowController.instance.StartTrackKey();
         ArrowController.OnSessionEnd += onFinish;
+
+        playerInfos = new List<PlayerInfo>();
+        playerInfos.Add(new PlayerInfo(1));
+        playerInfos.Add(new PlayerInfo(2));
+        playerInfos.Add(new PlayerInfo(3));
         ControllerteamDancing.instance.InitPositionPlayer();
     }
 
@@ -66,13 +100,15 @@ public class GameManager : MonoBehaviour
         }
         int rand1 = Random.Range(0, 3);
         score2 += getScore(rand1);
-        Player2Score.text = "Player 2: " + score2;
+        //Player2Score.text = "Player 2: " + score2;
+        UpdateScore(2, score2);
         Player2.GetComponent<Animator>().SetTrigger(triggerDance);
         initEffect(rand1, Player2.transform.GetChild(6).transform.position);
 
         int rand2 = Random.Range(0, 3);
         score3 += getScore(rand2);
-        Player3Score.text = "Player 3: " + score3;
+        //Player3Score.text = "Player 3: " + score3;
+        UpdateScore(3, score3);
         Player3.GetComponent<Animator>().SetTrigger(triggerDance);
         initEffect(rand1, Player3.transform.GetChild(3).transform.position);
     }
@@ -162,7 +198,8 @@ public class GameManager : MonoBehaviour
 
                 }
 
-                Player1Score.text = "Player 1: " + score1;
+                //Player1Score.text = "Player 1: " + score1;
+                UpdateScore(1, score1);
             }
             else
                 initEffect(3, Player1.transform.GetChild(3).transform.position);
@@ -204,7 +241,8 @@ public class GameManager : MonoBehaviour
 
             }
 
-            Player1Score.text = "Player 1: " + score1;
+            //Player1Score.text = "Player 1: " + score1;
+            UpdateScore(1, score1);
             ArrowController.instance.BuildArrowList(5, 8);
             ArrowController.instance.StartTrackKey();
         }
