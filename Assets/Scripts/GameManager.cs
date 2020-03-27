@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private void OnIntroPlayEnded()
     {
         arrowBox.SetActive(true);
-        ArrowController.instance.BuildArrowList(5, 8);
+        ArrowController.instance.BuildArrowList(1, 5);
         ArrowController.instance.StartTrackKey();
         ArrowController.OnSessionEnd += onFinish;
     }
@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
         {
             isShowResultPopup = true;
             ResultPopup.active = true;
+            ResultPopup.transform.GetChild(2).GetComponent<Text>().text = score1.ToString();
         }
     }
 
@@ -178,7 +179,7 @@ public class GameManager : MonoBehaviour
         RefreshPosPlayer();
 
         //Ultimate
-        if (numRound == 5)
+        if (numRound == 20)
         {
             isFinish = true;
             timeFinish = Time.time;
@@ -252,7 +253,9 @@ public class GameManager : MonoBehaviour
 
             //Player1Score.text = "Player 1: " + score1;
             UpdateScore(1, score1);
-            ArrowController.instance.BuildArrowList(5, 8);
+            int lvl = numRound / 4 + 1;
+            int numArrow = 5 + numRound / 4;
+            ArrowController.instance.BuildArrowList(lvl, numArrow);
             ArrowController.instance.StartTrackKey();
         }
         
